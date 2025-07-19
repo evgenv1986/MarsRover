@@ -22,7 +22,8 @@ class Rover:
     def Left(self):pass
     def Right(self):pass
     def Move(self):
-        pass # self._plateau.Move(self, self._direction)
+        # pass 
+        self._plateau.Move(self, self._direction)
         
     def Direction(self)-> Direction: 
         return self._direction
@@ -63,7 +64,7 @@ class Plateau:
     def __init__(self, width: int, height: int):pass
     def AddRover(self, rover: Rover):
         self._cell = Cell(
-            self._cell.Position(), 
+            Coordinate(1,1), 
             rover)
     def HasRover(self): 
         return self._cell.HasRover()
@@ -71,9 +72,9 @@ class Plateau:
         pass
     def RoverDirection(self): pass
     
-    # def Move(self, 
-    #          placeable: Placeable, 
-    #          direction: Direction):pass
+    def Move(self, 
+             rover: Rover, 
+             direction: Direction):pass
     
     
     
