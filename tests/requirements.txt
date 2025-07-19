@@ -1,0 +1,6 @@
+pytest
+pytest-asyncio
+requests
+httpx
+pydantic
+allure-pytest  # для красивых отчетов (опционально)
