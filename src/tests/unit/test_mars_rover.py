@@ -19,6 +19,17 @@ class TestMarsRover:
 
         moveableRover.Move()
         
+    def test_coordinate(self):
+        assert Coordinate(0,1).__eq__(Coordinate(0,0))
+        
+    def test_command(self):
+        command = MoveCommand.CreateByDirection(
+                    Direction.North,
+                    Coordinate(0,0))
+        position: Coordinate = command.NextPosition()
+        assert not Coordinate(0,0).__eq__(position)
+        assert Coordinate(0,1).__eq__(position)
+    
     def test_not_implemented_methods(self):
         rover = Rover(Direction.North)
         rover.Left()

@@ -13,6 +13,20 @@ class Direction(Enum):
         return True
     
 
+class Coordinate:
+    _x: int
+    _y: int
+    def __init__(self, x: int, y: int):
+        self._x = x
+        self._y = y
+    def __eq__(self, obj: object)-> bool:
+        if isinstance(obj, Coordinate):
+            other: Coordinate = obj
+            return self._x == other._x and \
+                   self._y == other._y
+        return False
+    
+    
 class MoveCommand(ABC):
     def __init__(self, direction: Direction, coordinate: 'Coordinate'):pass
     @classmethod
@@ -25,27 +39,28 @@ class MoveCommand(ABC):
             return MoveDecXCommand(coordinate)
         if direction.South:
             return MoveDecYCommand(coordinate)
+        raise ValueError("Invalid direction provided")
     @abstractmethod
-    def NextPosition(self): pass
+    def NextPosition(self)->Coordinate: pass
   
 class MoveIncYCommand(MoveCommand):
-    def __init__(self, coordinate: 'Coordinate'):pass
-    def NextPosition(self): pass
+    _coordinate: Coordinate
+    def __init__(self, coordinate: 'Coordinate'):
+        self._coordinate = coordinate
+    def NextPosition(self): 
+        return Coordinate(
+            self._coordinate._x,
+            self._coordinate._y + 1)
 class MoveIncXCommand(MoveCommand):
     def __init__(self, coordinate: 'Coordinate'):pass
-    def NextPosition(self): pass
+    def NextPosition(self):  return Coordinate(0,0)
 class MoveDecXCommand(MoveCommand):
     def __init__(self, coordinate: 'Coordinate'):pass
-    def NextPosition(self): pass
+    def NextPosition(self):  return Coordinate(0,0)
 class MoveDecYCommand(MoveCommand):
     def __init__(self, coordinate: 'Coordinate'):pass
-    def NextPosition(self): pass
+    def NextPosition(self):  return Coordinate(0,0)
    
-class Coordinate:
-    def __init__(self, x: int, y: int):pass
-    def __eq__(self, obj: object)-> bool:
-        other = obj
-        return True
         
 class Spatial(ABC):
     @abstractmethod
@@ -65,7 +80,25 @@ class Plateau(Spatial):
     def Land(self, moveable: 'Moveable'):
         self._moveable = moveable
         self._moveableCoordinate = Coordinate(0,0)
-    
+    def Move(self, 
+            #  from_: Coordinate,
+             direction: Direction,
+             moveable):
+        command = MoveCommand.CreateByDirection(
+                    direction,
+                    self._checked_position)
+        # command.NextPosition()
+        # _moveableCoordinate = command.NextPosition()
+        # 1,0   1,1
+        # 0,0   1,0
+        # moveIncYCommand = Move (Direction.North) -> from_.IncY()
+        # moveIncXCommand = Move (Direction.East) -> from_.IncX()
+        # moveDecXCommand = Move (Direction.West) -> from_.DecX()
+        # moveDecYCommand = Move (Direction.South) -> from_.DecY()
+        # command.execute()
+        # nextCoordinate = Coordinate(1,0)
+        # moveable.ChangePosition(newCoordinate())
+        
     def AddRover(self, rover: 'Rover'):
         self._cell = Cell(
             Coordinate(0, 0), 
@@ -78,29 +111,16 @@ class Plateau(Spatial):
         pass
     def RoverDirection(self): pass
     
-    def Move(self, 
-            #  from_: Coordinate,
-             direction: Direction,
-             moveable):
-        # pass
-        command = MoveCommand.CreateByDirection(
-                    direction,
-                    self._checked_position)
-        next_ = command.NextPosition()
-        # 1,0   1,1
-        # 0,0   1,0
-        # moveIncYCommand = Move (Direction.North) -> from_.IncY()
-        # moveIncXCommand = Move (Direction.East) -> from_.IncX()
-        # moveDecXCommand = Move (Direction.West) -> from_.DecX()
-        # moveDecYCommand = Move (Direction.South) -> from_.DecY()
-        # command.execute()
-        # nextCoordinate = Coordinate(1,0)
-        # moveable.ChangePosition(newCoordinate())
+    
 
 
 class Moveable(ABC):
     @abstractmethod
     def Move(cls):pass
+    @abstractmethod
+    def Left(cls):pass
+    @abstractmethod
+    def Right(cls):pass
     @abstractmethod
     def LandToPlateau(clas, spatial: 'Spatial'):pass
 
@@ -110,8 +130,6 @@ class Rover (Moveable):
     _coordinate: Coordinate
     def __init__ (self, direction: Direction):
         self._direction = direction
-        # self._coordinate = coordinate
-        
     def Left(self):pass
     def Right(self):pass
     def Move(self):
@@ -126,7 +144,6 @@ class Rover (Moveable):
     def Execute(self, command: MoveCommand):pass
     def LandToPlateau(self, spatial: Spatial):
         self._plateau = spatial
-        # self._plateau.AddRover(self)
 
     
 class EmptyCell:
