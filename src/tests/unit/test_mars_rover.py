@@ -11,13 +11,16 @@ class TestMarsRover:
         rover = Rover(Direction.North)
         assert Direction.North.__eq__ (rover.Direction())
 
-
         moveableRover: Moveable = Rover(Direction.North)
         spatialPlateau: Spatial = Plateau(2, 2)
         spatialPlateau.Land(moveableRover)
         moveableRover.LandToPlateau(spatialPlateau)
 
+        # move on north and check position
         moveableRover.Move()
+        assert moveableRover.Coordinate().__eq__(Coordinate(0, 1))
+        
+        assert Direction.North.__eq__ (moveableRover.Direction())
         
     def test_coordinate(self):
         assert Coordinate(0,1).__eq__(Coordinate(0,0))

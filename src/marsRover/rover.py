@@ -9,8 +9,10 @@ class Direction(Enum):
     West = 3
     South = 4
     def __eq__(self, obj: object)-> bool:
-        other: Direction = Direction (obj)
-        return True
+        if isinstance(obj, Direction):
+            other: Direction = obj
+            return self.name == other.name
+        return False
     
 
 class Coordinate:
@@ -70,25 +72,28 @@ class Spatial(ABC):
             #  from_: Coordinate,
              direction: Direction,
              moveable):pass
+    @abstractmethod
+    def RoverPosition(self)-> Coordinate: pass
       
 class Plateau(Spatial):
-    # _cell: Cell
-    _checked_position: Coordinate
     _moveable: 'Moveable'
     _moveableCoordinate: Coordinate
-    def __init__(self, width: int, height: int):pass
+    _commands: list
+    _width: int
+    _height: int
+    def __init__(self, width: int, height: int):
+        self._width = width
+        self._height = height
     def Land(self, moveable: 'Moveable'):
         self._moveable = moveable
         self._moveableCoordinate = Coordinate(0,0)
     def Move(self, 
-            #  from_: Coordinate,
              direction: Direction,
-             moveable):
+             moveable: 'Moveable'):
         command = MoveCommand.CreateByDirection(
                     direction,
-                    self._checked_position)
-        # command.NextPosition()
-        # _moveableCoordinate = command.NextPosition()
+                    self._moveableCoordinate)
+        self._moveableCoordinate = command.NextPosition()
         # 1,0   1,1
         # 0,0   1,0
         # moveIncYCommand = Move (Direction.North) -> from_.IncY()
@@ -98,17 +103,11 @@ class Plateau(Spatial):
         # command.execute()
         # nextCoordinate = Coordinate(1,0)
         # moveable.ChangePosition(newCoordinate())
-        
-    def AddRover(self, rover: 'Rover'):
-        self._cell = Cell(
-            Coordinate(0, 0), 
-            rover)
-    def CheckPosition(self, checking: Coordinate):
-        self._checked_position = checking   
-    def HasRover(self): 
-        return self._cell.HasRover()
-    def Position(self): 
-        pass
+    def RoverPosition(self): 
+        return self._moveableCoordinate
+    def HasRover(self): pass
+        # return self._cell.HasRover()
+    def Position(self): pass
     def RoverDirection(self): pass
     
     
@@ -140,7 +139,7 @@ class Rover (Moveable):
     def Direction(self)-> Direction: 
         return self._direction
     def Coordinate(self): 
-        return self._coordinate
+        return self._plateau.RoverPosition()
     def Execute(self, command: MoveCommand):pass
     def LandToPlateau(self, spatial: Spatial):
         self._plateau = spatial
