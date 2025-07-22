@@ -63,7 +63,9 @@ class MoveDecYCommand(MoveCommand):
     def __init__(self, coordinate: 'Coordinate'):pass
     def NextPosition(self):  return Coordinate(0,0)
    
-class DirectionCommand:pass
+class DirectionCommand(ABC):
+    @abstractmethod
+    def do(self):pass
     
         
 class Spatial(ABC):
@@ -131,16 +133,10 @@ class Rover (Moveable):
     _coordinate: Coordinate
     def __init__ (self, direction: Direction):
         self._direction = direction
-    def Left(self):pass
-    def Right(self):
-        com: DirectionCommand = DirectionCommand(self._direction)
-        com.Execute()
-        self._direction = com.Direction()
     def Move(self):
         self._plateau.Move(
             self._direction, 
             self)
-        
     def Direction(self)-> Direction: 
         return self._direction
     def Coordinate(self): 
@@ -148,7 +144,12 @@ class Rover (Moveable):
     def Execute(self, command: MoveCommand):pass
     def LandToPlateau(self, spatial: Spatial):
         self._plateau = spatial
-
+    
+    def changeDirection(self, title: str):
+        self._direction = Direction.North()
+        self._direction = self._direction.change(DirectionAsChar('R'))
+        
+        
     
 class EmptyCell:
     _coordinate: Coordinate
