@@ -136,10 +136,10 @@ class Rover (Moveable):
     def changeDirection(self, title: str):
         pass
 
-    def Left(cls):
+    def Left(self):
         raise NotImplementedError
 
-    def Right(cls):
+    def Right(self):
         raise NotImplementedError
 
         # self._direction = NorthDirection()
