@@ -1,5 +1,4 @@
-from marsRover.rover import Direction, DirectionCommand, EastDirection, NorthDirection, SouthDirection, WestDirection
-
+from marsRover.DirectionModule import Direction, DirectionCommand, EastDirection, NorthDirection, SouthDirection, WestDirection
 
 class TestRover:
     def test_direction(self):

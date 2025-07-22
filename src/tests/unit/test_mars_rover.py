@@ -1,5 +1,6 @@
+from marsRover.DirectionModule import NorthDirection
 from src.marsRover.rover import \
-    Cell, DirectionCommand, MoveCommand, Coordinate, Direction, Moveable, Plateau, Rover, Spatial
+    Cell, MoveCommand, Coordinate, Direction, Moveable, Plateau, Rover, Spatial
 
 
 
@@ -8,10 +9,10 @@ class TestMarsRover:
     def test_research_mars(self):
         pass
     def test_rover(self):
-        rover = Rover(Direction.North)
-        assert Direction.North.__eq__ (rover.Direction())
+        rover = Rover(NorthDirection())
+        assert NorthDirection().__eq__ (rover.Direction())
 
-        moveableRover: Moveable = Rover(Direction.North)
+        moveableRover: Moveable = Rover(NorthDirection())
         spatialPlateau: Spatial = Plateau(2, 2)
         spatialPlateau.Land(moveableRover)
         moveableRover.LandToPlateau(spatialPlateau)
@@ -20,7 +21,7 @@ class TestMarsRover:
         moveableRover.Move()
         assert moveableRover.Coordinate().__eq__(Coordinate(0, 1))
         
-        assert Direction.North.__eq__ (moveableRover.Direction())
+        assert NorthDirection().__eq__ (moveableRover.Direction())
         
         
     def test_coordinate(self):
@@ -29,7 +30,7 @@ class TestMarsRover:
         
     def test_command(self):
         command = MoveCommand.CreateByDirection(
-                    Direction.North,
+                    NorthDirection(),
                     Coordinate(0,0))
         position: Coordinate = command.NextPosition()
         assert not Coordinate(0,0).__eq__(position)

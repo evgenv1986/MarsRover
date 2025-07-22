@@ -3,66 +3,8 @@ from enum import Enum
 
 from git import Object
 
-class DirectionCommand(Enum):
-    L = 1
-    R = 2
+from marsRover.DirectionModule import Direction, EastDirection, NorthDirection, SouthDirection, WestDirection
 
-class Direction():
-    def CreateDirection(self, command: DirectionCommand):
-        if command.name == 'R':
-            return NorthDirection()
-        raise ValueError("Invalid direction provided")
-        
-    @abstractmethod
-    def change(sefl, command: DirectionCommand)-> 'Direction':
-        pass
-    
-    @abstractmethod
-    def name(self)->str:pass
-    
-    def __eq__(self, obj: object)-> bool:
-        if isinstance(obj, Direction):
-            other: Direction = obj
-            return self.name == other.name
-        return False
-
-class SouthDirection(Direction):
-    def change(self, command: DirectionCommand):
-        if command == DirectionCommand.R:
-            return WestDirection()
-        if command == DirectionCommand.L:
-            return EastDirection()
-    def name(self)->str:
-        return 'South'
-    
-class WestDirection(Direction):
-    def change(self, command: DirectionCommand):
-        if command == DirectionCommand.R:
-            return NorthDirection()
-        if command == DirectionCommand.L:
-            return SouthDirection()
-    def name(self)->str:
-        return 'West'
-    
-class EastDirection(Direction):
-    def change(self, command: DirectionCommand):
-        if command == DirectionCommand.R:
-            return SouthDirection()
-        if command == DirectionCommand.L:
-            return NorthDirection()
-    def name(self)->str:
-        return 'East'
-    
-class NorthDirection(Direction):
-    def change(self, command: DirectionCommand):
-        if command == DirectionCommand.R:
-            return EastDirection()
-        if command == DirectionCommand.L:
-            return WestDirection()
-    def name(self)->str:
-        return 'North'
-    
- 
 class Coordinate:
     _x: int
     _y: int
@@ -81,13 +23,13 @@ class MoveCommand(ABC):
     def __init__(self, direction: Direction, coordinate: 'Coordinate'):pass
     @classmethod
     def CreateByDirection(cls, direction: Direction, coordinate: 'Coordinate'):
-        if direction.North:
+        if NorthDirection().name() == direction.name():
             return MoveIncYCommand(coordinate)
-        if direction.East:
+        if EastDirection().name() == direction.name():
             return MoveIncXCommand(coordinate)
-        if direction.West:
+        if WestDirection().name() == direction.name():
             return MoveDecXCommand(coordinate)
-        if direction.South:
+        if SouthDirection().name() == direction.name():
             return MoveDecYCommand(coordinate)
         raise ValueError("Invalid direction provided")
     @abstractmethod
@@ -192,8 +134,16 @@ class Rover (Moveable):
         self._plateau = spatial
     
     def changeDirection(self, title: str):
-        self._direction = Direction.North()
-        self._direction = self._direction.change(DirectionAsChar('R'))
+        pass
+
+    def Left(cls):
+        raise NotImplementedError
+
+    def Right(cls):
+        raise NotImplementedError
+
+        # self._direction = NorthDirection()
+        # self._direction = self._direction.change(title)
         
         
     
