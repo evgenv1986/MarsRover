@@ -1,5 +1,5 @@
 from src.marsRover.rover import \
-    Cell, MoveCommand, Coordinate, Direction, Moveable, Plateau, Rover, Spatial
+    Cell, DirectionCommand, MoveCommand, Coordinate, Direction, Moveable, Plateau, Rover, Spatial
 
 
 
@@ -22,8 +22,18 @@ class TestMarsRover:
         
         assert Direction.North.__eq__ (moveableRover.Direction())
         
+        com: DirectionCommand = DirectionCommand(moveableRover.Coordinate())
+        com.Execute()
+        nextDirection: Direction = com.Direction()
+        assert Direction.East.__eq__(nextDirection)
+        
+        moveableRover.Right()
+        assert Direction.East.__eq__ (moveableRover.Direction())
+        
+        
     def test_coordinate(self):
-        assert Coordinate(0,1).__eq__(Coordinate(0,0))
+        assert Coordinate(0,0).__eq__(Coordinate(0,0))
+        assert not Coordinate(0,1).__eq__(Coordinate(0,0))
         
     def test_command(self):
         command = MoveCommand.CreateByDirection(
