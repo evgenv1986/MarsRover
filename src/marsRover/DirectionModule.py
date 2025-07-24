@@ -12,11 +12,13 @@ class Direction():
         if command.name == 'R':
             return NorthDirection()
         raise ValueError("Invalid direction provided")
-        
+    @abstractmethod
+    def TurnRight(self)-> 'Direction': pass
+    @abstractmethod
+    def TurnLeft(self)-> 'Direction': pass
     @abstractmethod
     def change(sefl, command: DirectionCommand)-> 'Direction':
         pass
-    
     @abstractmethod
     def name(self)->str:pass
     
@@ -27,6 +29,11 @@ class Direction():
         return False
 
 class SouthDirection(Direction):
+    def TurnLeft(self):
+        return EastDirection()
+    def TurnRight(self):
+        return WestDirection()
+
     def change(self, command: DirectionCommand):
         if command == DirectionCommand.R:
             return WestDirection()

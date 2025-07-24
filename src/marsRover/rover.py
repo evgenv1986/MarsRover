@@ -142,9 +142,6 @@ class Rover (Moveable):
     def Right(self):
         raise NotImplementedError
 
-        # self._direction = NorthDirection()
-        # self._direction = self._direction.change(title)
-        
         
     
 class EmptyCell:

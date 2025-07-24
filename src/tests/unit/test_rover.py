@@ -15,7 +15,10 @@ class TestRover:
         d = d.change(DirectionCommand.R)
         assert NorthDirection().name() == d.name()
         
-       
+    def test_turn_left_and_right(self):
+        d: Direction = SouthDirection()
+        d = d.TurnRight()
+        assert WestDirection().__eq__(d)
         
         
     def test_change_rover_direction(self):
