@@ -1,6 +1,11 @@
+from marsRover.Coordinate import Coordinate
 from marsRover.DirectionModule import NorthDirection
+from marsRover.Moveable import Moveable
+from marsRover.Plateau import Plateau
+from marsRover.Rover import Rover
+from marsRover.Spatial import Spatial
 from src.marsRover.rover import \
-    Cell, MoveCommand, Coordinate, Direction, Moveable, Plateau, Rover, Spatial
+    Cell, MoveCommand, Direction
 
 
 
