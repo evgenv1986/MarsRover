@@ -8,7 +8,19 @@ class DirectionCommand(Enum):
     R = 2
 
 class Direction():
-    def CreateDirection(self, command: DirectionCommand):
+    def CreateByChar(self, directionChar: str):
+        if directionChar == 'S':
+            return SouthDirection()
+        if directionChar == 'W':
+            return WestDirection()
+        if directionChar == 'E':
+            return EastDirection()
+        if directionChar == 'N':
+            return NorthDirection()
+        
+        raise ValueError("Invalid direction provided")
+    @classmethod    
+    def CreateDirection(cls, command: DirectionCommand):
         if command.name == 'R':
             return NorthDirection()
         raise ValueError("Invalid direction provided")
